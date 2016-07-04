@@ -1,0 +1,48 @@
+#JPA Hibernate 笔记
+
+JPA - Java Persistence API, 提供了标准的JAVA的对象关系映射，集成了EJB3.0的特性，Hibernate是JPA的一个实现，如果系统中集成了Hibernate，而使用基本的JPA特性，那么在迁移时不会有太大的问题。
+
+###我们将讨论什么
+* 基本的概念
+* 一个简单的开始
+
+###基本的概念
+
+###一个简单的开始
+首先得从EntityManager的定义开始，下面的这个例子用的是persistence 2.0的标准，它和1.0在格式上有略微的差别如value不能留空。它定义了JPA所连接数据库的连接信息，所有注册的Entity Bean，由于这里使用的是Hibernate，所以数据库连接的property key使用Hibernate标准。
+
+在较新版本的Hibernate环境下，JPA的Persistence Provider应使用下面所示的类进行初始化。
+
+```java
+org.hibernate.jpa.HibernatePersistenceProvider
+```
+
+persistence.xml:
+JPA的配置文件默认需要放在META-INF文件下，在标准的web项目中，有默认的META-INF目录可以放，而在默认的Java项目中需要手动在resource目录中创建这个文件，这样在初始化的时候才能找得到。
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+                            http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+    <persistence-unit name="crawlerdb">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>com.timhub.seleniumcrawler.persistence.entity.ProductsEntity</class>
+        <class>com.timhub.seleniumcrawler.persistence.entity.ProductItemsEntity</class>
+        <class>com.timhub.seleniumcrawler.persistence.entity.ProductCommentsEntity</class>
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:mysql://timpc:3306/webcrawler?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useSSL=false"/>
+            <property name="hibernate.connection.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value="111111"/>
+            <property name="hibernate.dialet" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.id.new_generator_mappings" value="false"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+```
+
+
