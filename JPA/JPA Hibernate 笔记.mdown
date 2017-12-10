@@ -44,5 +44,14 @@ JPA的配置文件默认需要放在META-INF文件下，在标准的web项目中
     </persistence-unit>
 </persistence>
 ```
+###Transaction
+实体类的存储过程需要在一个transaction中完成，以下的code是一个标准的transaction流程
+```java
+EntityTransaction transaction = entityManager.getTransaction();
+transaction.begin();
+entityManager.persist(item);
+entityManager.flush();
+transaction.commit();
+```
 
 
